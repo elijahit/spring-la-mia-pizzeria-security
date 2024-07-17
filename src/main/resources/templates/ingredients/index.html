@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th='http://www.thymeleaf.org'>
+
+<head>
+  <title>Pizzeria - Ingredienti</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <div th:replace="~{fragments/header :: header()}"></div>
+  <div class="container">
+    <h1 class="fs-4 text-center mb-5">I nostri ingredienti</h1>
+    <section>
+      <div class="row">
+        <div class="col-4">
+          <div th:if="${listaIngredienti.isEmpty()}">
+            <p class="text-center badge text-bg-warning">Non ci sono ingredienti disponibili</p>
+          </div>
+          <div th:unless="${listaIngredienti.isEmpty()}">
+            <ul>
+              <th:block th:each="ingrediente: ${listaIngredienti}">
+                <li>
+                  <th:block th:text="${ingrediente.ingredient}"></th:block>
+                  <form class="d-inline" th:action="@{|/ingredients/delete/${ingrediente.id}|}" th:object="${ingrediente}" method="post">
+                    <button class="badge text-bg-danger"><i
+                        class="bi bi-trash"></i></button>
+                  </form>
+                </li>
+              </th:block>
+            </ul>
+          </div>
+        </div>
+        <div class="col-4">
+          <form class="me-5" th:action="@{/ingredients/create}" th:object="${ingrediente}" method="post">
+            <div class="mb-3">
+              <div th:if="${#fields.hasAnyErrors()}">
+                <ul>
+                  <li th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-danger">
+                  </li>
+                </ul>
+              </div>
+              <label for="nomeIngrediente" class="form-label">Aggiungi un ingrediente</label>
+              <input type="text" class="form-control" id="nomeIngrediente" aria-describedby="ingredienteHelp"
+                th:field="*{ingredient}" th:errorClass="is-invalid">
+              <div id="ingredienteHelp" class="form-text">Inserisci il nome che deve avere il tuo nuovo ingrediente.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Crea</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

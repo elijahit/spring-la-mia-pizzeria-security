@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<title th:text="${pizza.nome}"></title>
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header()}"></div>
+	<div class="container">
+		<h1 class="text-center fs-3 mt-5" th:text="${pizza.nome} + ' | € ' + ${#numbers.formatDecimal(pizza.prezzo, 1, 2, 'COMMA')}" ></h1>
+		<p class="text-center fs-5" th:text="${pizza.descrizione}"></p>
+		<p class="text-center">
+			<span th:each="ingrediente, i: ${pizza.ingredients}" th:text="!${i.last} ? ${ingrediente.ingredient} + ', ': ${ingrediente.ingredient}"></span>
+		</p>
+		<div class="d-flex justify-content-center">
+			<img class="img-fluid w-50 rounded-5" th:src="${pizza.fotoUrl}"/>
+		</div>
+		<div>
+			<h2 class="fs-3 text-center">Le offerte disponibili:</h2>
+			<div th:if="${pizza.specialOffers.isEmpty()}">
+				<p class="text-center">Nessuna offerta disponibile</p>
+			</div>
+			<div th:unless="${pizza.specialOffers.isEmpty()}">
+				<ul th:each="offers: ${pizza.specialOffers}" class="list-unstyled">
+					<div class="d-flex justify-content-center align-items-center gap-2">
+						<li th:text="|${offers.title} dal giorno ${offers.startDate} al giorno ${offers.endDate}|" class="text-center"></li>
+						<a class="btn btn-primary" th:href="@{|/offers/${offers.id}/edit|}">Modifica</a>
+					</div>
+				</ul>
+			</div>
+			<div class="d-flex justify-content-center">
+				<a class="btn btn-primary" th:href="@{|/pizza/${pizza.id}/offers|}">Crea nuova offerta</a>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"></script>
+</body>
+</html>
