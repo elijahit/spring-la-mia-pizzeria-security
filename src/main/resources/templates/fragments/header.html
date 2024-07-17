@@ -12,10 +12,10 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="/create">Crea nuova pizza</a>
+						<a sec:authorize="hasAuthority('ADMIN')" class="nav-link active" aria-current="page" href="/create">Crea nuova pizza</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="/ingredients">Ingredienti</a>
+						<a sec:authorize="hasAuthority('ADMIN')" class="nav-link active" aria-current="page" href="/ingredients">Ingredienti</a>
 					</li>
 				</ul>
 			</div>
